@@ -2,4 +2,5 @@
 
 export(get_buoy)
 export(read_buoy_list)
+export(write_buoy)
 importFrom(rlang,.data)

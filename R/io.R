@@ -39,3 +39,16 @@ get_buoy = function(x = read_buoy_list() |> dplyr::slice(1:2),
   
   return(r)
 }
+
+#' Write buoy data to file
+#' 
+#' @export
+#' @param x table of data
+#' @param filename str/chr, the name of the file to write
+#' @return the input table
+write_buoy = function(x = read_buoy(),
+                      filename = "buoy.csv.gz"){
+  
+  x = readr::write_csv(x, filename)
+  invisible(x)
+}
