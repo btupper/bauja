@@ -16,3 +16,26 @@ read_buoy_list = function(form = c("table", "sf")[1]){
   }
   return(x)
 }
+
+#' Retrieve buoy data for one or more buoys
+#' 
+#' @export
+#' @param x a table of buoy metadata for one or more buoys
+#' @param ... other arguments for the [buoydata::get_buoy_data()]
+#' @return table
+get_buoy = function(x = read_buoy_list() |> dplyr::slice(1:2),
+                    ...){
+  r = x |>
+    dplyr::rowwise() |>
+    dplyr::group_map(
+      function(row, key){
+        b = buoydata::get_buoy_data(row$ID, ...) |>
+          dplyr::as_tibble() |>
+          dplyr::mutate(ID = row$ID, .before = 1)
+        return(b)
+      }
+    ) |>
+    dplyr::bind_rows()
+  
+  return(r)
+}
